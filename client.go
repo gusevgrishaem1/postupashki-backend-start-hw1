@@ -11,10 +11,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer conn.Close()
 
-	resp, _ := bufio.NewReader(conn).ReadString('\n')
+	resp, err := bufio.NewReader(conn).ReadString('\n')
+	if err != nil {
+		conn.Close()
+		log.Fatal(err)
+	}
+
 	if resp != "OK\n" {
+		conn.Close()
 		log.Fatal("invalid response")
 	}
 }

@@ -10,11 +10,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer ln.Close()
 
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
+			log.Println("Error accepting connection:", err)
 			continue
 		}
 
@@ -24,5 +24,8 @@ func main() {
 
 func handleConn(conn net.Conn) {
 	defer conn.Close()
-	conn.Write([]byte("OK\n"))
+	_, err := conn.Write([]byte("OK\n"))
+	if err != nil {
+		log.Println("Error writing to connection:", err)
+	}
 }
